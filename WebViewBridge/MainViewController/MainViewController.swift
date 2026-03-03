@@ -9,6 +9,7 @@ class MainViewController: UIViewController {
     
     @IBOutlet weak var functionSegmentView: UISegmentedControl!
     
+    @IBOutlet weak var tableViewContainer: UIView!
     @IBOutlet weak var functionTableView: UITableView!
     @IBOutlet weak var logTableView: UITableView!
     @IBOutlet weak var storageTableView: UITableView!
@@ -17,11 +18,15 @@ class MainViewController: UIViewController {
     
     private var webView: WKWebView!
     var router: BridgeRouter!
+    
+    private var panGesture: UIPanGestureRecognizer!
+    private var initialBottomConstraint: CGFloat = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setUI()
+        setupDividerGesture()
         setWebView()
     }
     
@@ -29,16 +34,57 @@ class MainViewController: UIViewController {
         webView?.configuration.userContentController.removeScriptMessageHandler(forName: "bridge")
     }
     
+    // MARK: - UI Setup
+    
     func setUI () {
         let conerRadius: CGFloat = 18
         
-        dividerHadleView.layer.cornerRadius = 3
+        dividerHadleView.layer.cornerRadius = 4
         
         functionTableView.layer.cornerRadius = conerRadius
         logTableView.layer.cornerRadius = conerRadius
         storageTableView.layer.cornerRadius = conerRadius
+        
+//        dividerView.backgroundColor = .systemGray5
+//        dividerHadleView.backgroundColor = .systemGray3
     }
     
+    // MARK: - Setup Divider Gesture
+    
+    func setupDividerGesture() {
+        panGesture = UIPanGestureRecognizer(target: self, action: #selector(handleDividerPan(_:)))
+        dividerView.addGestureRecognizer(panGesture)
+        dividerView.isUserInteractionEnabled = true
+    }
+    
+    @objc func handleDividerPan(_ gesture: UIPanGestureRecognizer) {
+        switch gesture.state {
+        case .began:
+            initialBottomConstraint = bottomViewConstraint.constant
+            
+        case .changed:
+            let dividerY = gesture.location(in: view).y
+            let safeAreaTop = view.safeAreaInsets.top
+            let safeAreaBottom = view.safeAreaInsets.bottom
+            let availableHeight = view.bounds.height - safeAreaTop - safeAreaBottom
+            let bottomSpace = view.bounds.height - dividerY - safeAreaBottom
+            let minAreaHeight = availableHeight / 3
+            let minBottom = minAreaHeight
+            let maxBottom = availableHeight - minAreaHeight
+            
+            bottomViewConstraint.constant = max(minBottom, min(maxBottom, bottomSpace))
+            
+        case .ended, .cancelled:
+            UIView.animate(withDuration: 0.2) {
+                self.view.layoutIfNeeded()
+            }
+            
+        default:
+            break
+        }
+    }
+    
+    // MARK: - Setup WebView
     func setWebView() {
         let config = WKWebViewConfiguration()
         webView = WKWebView(frame: .zero, configuration: config)

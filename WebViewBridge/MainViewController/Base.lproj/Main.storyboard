@@ -18,22 +18,22 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jil-dC-JI7">
-                                <rect key="frame" x="0.0" y="492" width="393" height="10"/>
+                                <rect key="frame" x="0.0" y="488" width="393" height="14"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Tyv-Fm-iZG">
-                                        <rect key="frame" x="146.66666666666666" y="2" width="100" height="6"/>
+                                        <rect key="frame" x="156.66666666666666" y="3" width="80" height="8"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="6" id="E8e-kG-Afj"/>
-                                            <constraint firstAttribute="width" constant="100" id="bF1-1n-iAX"/>
+                                            <constraint firstAttribute="height" constant="8" id="E8e-kG-Afj"/>
+                                            <constraint firstAttribute="width" constant="80" id="bF1-1n-iAX"/>
                                         </constraints>
                                     </view>
                                 </subviews>
-                                <color key="backgroundColor" systemColor="systemYellowColor"/>
+                                <color key="backgroundColor" systemColor="systemGray2Color"/>
                                 <constraints>
                                     <constraint firstItem="Tyv-Fm-iZG" firstAttribute="centerX" secondItem="jil-dC-JI7" secondAttribute="centerX" id="2cm-Lw-47b"/>
                                     <constraint firstItem="Tyv-Fm-iZG" firstAttribute="centerY" secondItem="jil-dC-JI7" secondAttribute="centerY" id="ilD-4y-2TB"/>
-                                    <constraint firstAttribute="height" constant="10" id="sA3-Kh-x2x"/>
+                                    <constraint firstAttribute="height" constant="14" id="sA3-Kh-x2x"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1C5-Fe-vL0">
@@ -80,8 +80,8 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9TM-Wz-VMC">
-                                <rect key="frame" x="0.0" y="118" width="393" height="374"/>
-                                <color key="backgroundColor" systemColor="systemGreenColor"/>
+                                <rect key="frame" x="0.0" y="118" width="393" height="370"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="aYS-gc-PrI"/>
@@ -107,6 +107,7 @@
                         <outlet property="functionTableView" destination="p7s-6a-3jG" id="ZaR-F3-MhV"/>
                         <outlet property="logTableView" destination="nPW-vv-HU8" id="rfh-KV-CGb"/>
                         <outlet property="storageTableView" destination="Ihb-Fr-yY5" id="NIk-XS-vNY"/>
+                        <outlet property="tableViewContainer" destination="1C5-Fe-vL0" id="Gba-EX-ONW"/>
                         <outlet property="webContainerView" destination="9TM-Wz-VMC" id="idm-rL-Td6"/>
                     </connections>
                 </viewController>
@@ -122,11 +123,8 @@
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
-        <systemColor name="systemGreenColor">
-            <color red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
-        <systemColor name="systemYellowColor">
-            <color red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        <systemColor name="systemGray2Color">
+            <color red="0.68235294120000001" green="0.68235294120000001" blue="0.69803921570000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
