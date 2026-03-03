@@ -6,25 +6,30 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		4831B6DD2F541BB300A05D7E /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4831B6DC2F541BB300A05D7E /* WebKit.framework */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
-		48DAD4942F4FEBCC00EBB19C /* WebViewBridge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WebViewBridge.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4831B6AC2F5413DF00A05D7E /* WebViewBridge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WebViewBridge.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4831B6DC2F541BB300A05D7E /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		48DAD4A62F4FEBCD00EBB19C /* Exceptions for "WebViewBridge" folder in "WebViewBridge" target */ = {
+		4831B6BE2F5413E000A05D7E /* Exceptions for "WebViewBridge" folder in "WebViewBridge" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
 			);
-			target = 48DAD4932F4FEBCC00EBB19C /* WebViewBridge */;
+			target = 4831B6AB2F5413DF00A05D7E /* WebViewBridge */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		48DAD4962F4FEBCC00EBB19C /* WebViewBridge */ = {
+		4831B6AE2F5413DF00A05D7E /* WebViewBridge */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				48DAD4A62F4FEBCD00EBB19C /* Exceptions for "WebViewBridge" folder in "WebViewBridge" target */,
+				4831B6BE2F5413E000A05D7E /* Exceptions for "WebViewBridge" folder in "WebViewBridge" target */,
 			);
 			path = WebViewBridge;
 			sourceTree = "<group>";
@@ -32,93 +37,103 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		48DAD4912F4FEBCC00EBB19C /* Frameworks */ = {
+		4831B6A92F5413DF00A05D7E /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4831B6DD2F541BB300A05D7E /* WebKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		48DAD48B2F4FEBCC00EBB19C = {
+		4831B6A32F5413DF00A05D7E = {
 			isa = PBXGroup;
 			children = (
-				48DAD4962F4FEBCC00EBB19C /* WebViewBridge */,
-				48DAD4952F4FEBCC00EBB19C /* Products */,
+				4831B6AE2F5413DF00A05D7E /* WebViewBridge */,
+				4831B6DB2F541BB200A05D7E /* Frameworks */,
+				4831B6AD2F5413DF00A05D7E /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		48DAD4952F4FEBCC00EBB19C /* Products */ = {
+		4831B6AD2F5413DF00A05D7E /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				48DAD4942F4FEBCC00EBB19C /* WebViewBridge.app */,
+				4831B6AC2F5413DF00A05D7E /* WebViewBridge.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		4831B6DB2F541BB200A05D7E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				4831B6DC2F541BB300A05D7E /* WebKit.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		48DAD4932F4FEBCC00EBB19C /* WebViewBridge */ = {
+		4831B6AB2F5413DF00A05D7E /* WebViewBridge */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 48DAD4A72F4FEBCD00EBB19C /* Build configuration list for PBXNativeTarget "WebViewBridge" */;
+			buildConfigurationList = 4831B6BF2F5413E000A05D7E /* Build configuration list for PBXNativeTarget "WebViewBridge" */;
 			buildPhases = (
-				48DAD4902F4FEBCC00EBB19C /* Sources */,
-				48DAD4912F4FEBCC00EBB19C /* Frameworks */,
-				48DAD4922F4FEBCC00EBB19C /* Resources */,
+				4831B6A82F5413DF00A05D7E /* Sources */,
+				4831B6A92F5413DF00A05D7E /* Frameworks */,
+				4831B6AA2F5413DF00A05D7E /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				48DAD4962F4FEBCC00EBB19C /* WebViewBridge */,
+				4831B6AE2F5413DF00A05D7E /* WebViewBridge */,
 			);
 			name = WebViewBridge;
 			packageProductDependencies = (
 			);
 			productName = WebViewBridge;
-			productReference = 48DAD4942F4FEBCC00EBB19C /* WebViewBridge.app */;
+			productReference = 4831B6AC2F5413DF00A05D7E /* WebViewBridge.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		48DAD48C2F4FEBCC00EBB19C /* Project object */ = {
+		4831B6A42F5413DF00A05D7E /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 2620;
 				LastUpgradeCheck = 2620;
 				TargetAttributes = {
-					48DAD4932F4FEBCC00EBB19C = {
+					4831B6AB2F5413DF00A05D7E = {
 						CreatedOnToolsVersion = 26.2;
 					};
 				};
 			};
-			buildConfigurationList = 48DAD48F2F4FEBCC00EBB19C /* Build configuration list for PBXProject "WebViewBridge" */;
+			buildConfigurationList = 4831B6A72F5413DF00A05D7E /* Build configuration list for PBXProject "WebViewBridge" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
 			);
-			mainGroup = 48DAD48B2F4FEBCC00EBB19C;
+			mainGroup = 4831B6A32F5413DF00A05D7E;
 			minimizedProjectReferenceProxies = 1;
 			preferredProjectObjectVersion = 77;
-			productRefGroup = 48DAD4952F4FEBCC00EBB19C /* Products */;
+			productRefGroup = 4831B6AD2F5413DF00A05D7E /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				48DAD4932F4FEBCC00EBB19C /* WebViewBridge */,
+				4831B6AB2F5413DF00A05D7E /* WebViewBridge */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		48DAD4922F4FEBCC00EBB19C /* Resources */ = {
+		4831B6AA2F5413DF00A05D7E /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -128,7 +143,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		48DAD4902F4FEBCC00EBB19C /* Sources */ = {
+		4831B6A82F5413DF00A05D7E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -138,7 +153,7 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		48DAD4A82F4FEBCD00EBB19C /* Debug */ = {
+		4831B6C02F5413E000A05D7E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -153,6 +168,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -170,7 +186,7 @@
 			};
 			name = Debug;
 		};
-		48DAD4A92F4FEBCD00EBB19C /* Release */ = {
+		4831B6C12F5413E000A05D7E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -185,6 +201,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -202,7 +219,7 @@
 			};
 			name = Release;
 		};
-		48DAD4AA2F4FEBCD00EBB19C /* Debug */ = {
+		4831B6C22F5413E000A05D7E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -255,7 +272,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -266,7 +283,7 @@
 			};
 			name = Debug;
 		};
-		48DAD4AB2F4FEBCD00EBB19C /* Release */ = {
+		4831B6C32F5413E000A05D7E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -313,7 +330,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -326,25 +343,25 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		48DAD48F2F4FEBCC00EBB19C /* Build configuration list for PBXProject "WebViewBridge" */ = {
+		4831B6A72F5413DF00A05D7E /* Build configuration list for PBXProject "WebViewBridge" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				48DAD4AA2F4FEBCD00EBB19C /* Debug */,
-				48DAD4AB2F4FEBCD00EBB19C /* Release */,
+				4831B6C22F5413E000A05D7E /* Debug */,
+				4831B6C32F5413E000A05D7E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		48DAD4A72F4FEBCD00EBB19C /* Build configuration list for PBXNativeTarget "WebViewBridge" */ = {
+		4831B6BF2F5413E000A05D7E /* Build configuration list for PBXNativeTarget "WebViewBridge" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				48DAD4A82F4FEBCD00EBB19C /* Debug */,
-				48DAD4A92F4FEBCD00EBB19C /* Release */,
+				4831B6C02F5413E000A05D7E /* Debug */,
+				4831B6C12F5413E000A05D7E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 48DAD48C2F4FEBCC00EBB19C /* Project object */;
+	rootObject = 4831B6A42F5413DF00A05D7E /* Project object */;
 }
