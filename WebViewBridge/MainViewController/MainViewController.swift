@@ -16,8 +16,10 @@ class MainViewController: UIViewController {
     
     @IBOutlet weak var bottomViewConstraint: NSLayoutConstraint!
     
-    private var webView: WKWebView!
+    var webView: WKWebView!
     var router: BridgeRouter!
+    var logItems: [LogItem] = []
+    var storageItems: [(key: String, value: String)] = []
     
     private var panGesture: UIPanGestureRecognizer!
     private var initialBottomConstraint: CGFloat = 0
@@ -26,6 +28,7 @@ class MainViewController: UIViewController {
         super.viewDidLoad()
         
         setUI()
+        setupTableView()
         setupDividerGesture()
         setWebView()
     }
@@ -35,18 +38,46 @@ class MainViewController: UIViewController {
     }
     
     // MARK: - UI Setup
-    
+
     func setUI () {
         let conerRadius: CGFloat = 18
         
-        dividerHadleView.layer.cornerRadius = 4
-        
+        // TableView corner radius (동적으로 조절될 수 있어서 코드로 유지)
         functionTableView.layer.cornerRadius = conerRadius
         logTableView.layer.cornerRadius = conerRadius
         storageTableView.layer.cornerRadius = conerRadius
         
-//        dividerView.backgroundColor = .systemGray5
-//        dividerHadleView.backgroundColor = .systemGray3
+        functionTableView.isHidden = false
+        logTableView.isHidden = true
+        storageTableView.isHidden = true
+    }
+    
+    // MARK: - Setup TableView
+    
+    func setupTableView() {
+        // FunctionTableView 설정
+        functionTableView.delegate = self
+        functionTableView.dataSource = self
+        
+        let nib = UINib(nibName: "FunctionTableViewCell", bundle: nil)
+        functionTableView.register(nib, forCellReuseIdentifier: FunctionTableViewCell.identifier)
+        
+        functionTableView.separatorStyle = .singleLine
+        functionTableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        
+        // LogTableView 설정
+        logTableView.delegate = self
+        logTableView.dataSource = self
+        
+        let logNib = UINib(nibName: "LogTableViewCell", bundle: nil)
+        logTableView.register(logNib, forCellReuseIdentifier: LogTableViewCell.identifier)
+        
+        // StorageTableView 설정
+        storageTableView.delegate = self
+        storageTableView.dataSource = self
+        
+        let dataNib = UINib(nibName: "DataTableViewCell", bundle: nil)
+        storageTableView.register(dataNib, forCellReuseIdentifier: DataTableViewCell.identifier)
     }
     
     // MARK: - Setup Divider Gesture
@@ -85,6 +116,7 @@ class MainViewController: UIViewController {
     }
     
     // MARK: - Setup WebView
+    
     func setWebView() {
         let config = WKWebViewConfiguration()
         webView = WKWebView(frame: .zero, configuration: config)
@@ -102,7 +134,9 @@ class MainViewController: UIViewController {
             webView.trailingAnchor.constraint(equalTo: webContainerView.trailingAnchor),
         ])
         
-        let context = BridgeContext(viewController: self, webView: webView)
+        let context = BridgeContext(viewController: self, webView: webView) { [weak self] direction, status, action, detail in
+            self?.addLog(direction: direction, status: status, action: action, detail: detail)
+        }
         let router = BridgeRouter(context: context)
         
         router.register(NativeUIToastHandler())
@@ -119,5 +153,45 @@ class MainViewController: UIViewController {
         guard let url = URL(string: "http://192.168.0.10:5173") else { return }
         webView.load(URLRequest(url: url))
     }
+    
+    // MARK: - Storage
+    
+    func loadUserDefaults() {
+        let defaults = UserDefaults.standard
+        storageItems = defaults.dictionaryRepresentation()
+            .sorted { $0.key < $1.key }
+            .map { (key: $0.key, value: "\($0.value)") }
+        storageTableView.reloadData()
+    }
+    
+    // MARK: - Log
+    
+    func addLog(direction: LogDirection, status: LogStatus, action: String, detail: String) {
+        let log = LogItem(direction: direction, status: status, action: action, detail: detail)
+        logItems.insert(log, at: 0)
+        logTableView.reloadData()
+    }
+    
+    @IBAction func segmentChangeAction(_ sender: UISegmentedControl) {
+        // 모든 테이블뷰 숨기기
+        functionTableView.isHidden = true
+        logTableView.isHidden = true
+        storageTableView.isHidden = true
+        
+        // 선택된 세그먼트에 따라 테이블뷰 표시
+        switch sender.selectedSegmentIndex {
+        case 0: // 기능
+            functionTableView.isHidden = false
+        case 1: // 콘솔
+            logTableView.isHidden = false
+        case 2: // 데이터
+            storageTableView.isHidden = false
+            loadUserDefaults()
+        default:
+            functionTableView.isHidden = false // 기본값
+        }
+    }
 }
+
+
 

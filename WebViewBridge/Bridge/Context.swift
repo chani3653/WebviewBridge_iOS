@@ -4,6 +4,7 @@ import WebKit
 struct BridgeContext {
     weak var viewController: UIViewController?
     weak var webView: WKWebView?
+    var onLog: ((LogDirection, LogStatus, String, String) -> Void)?
 
     func showToast(_ text: String) {
         guard let vc = viewController else { return }
@@ -43,5 +44,25 @@ struct BridgeContext {
             }
         }
         print("RUN sendResponse data:\(js)")
+        onLog?(.nativeToWeb, ok ? .success : .failure, "response(\(id.prefix(8))…)", json)
+    }
+    
+    func sendCommand(action: String, payload: [String: Any] = [:]) {
+        var obj: [String: Any] = [
+            "kind": "command",     // response가 아닌 command
+            "action": action,
+            "payload": payload
+        ]
+        guard
+            let data = try? JSONSerialization.data(withJSONObject: obj),
+            let json = String(data: data, encoding: .utf8)
+        else { return }
+
+        let js = "window.onNativeMessage && window.onNativeMessage(\(json))"
+        DispatchQueue.main.async {
+            self.webView?.evaluateJavaScript(js) { _, err in
+                if let err { print("sendCommand error:", err) }
+            }
+        }
     }
 }

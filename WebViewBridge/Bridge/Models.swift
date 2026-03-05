@@ -20,3 +20,5 @@ struct BridgeMessage {
 
     var requestType: String? { kind ?? type }
 }
+
+
