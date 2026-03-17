@@ -35,10 +35,18 @@ extension FunctionItem {
                     }
                 }
             },
-            FunctionItem(name: "웹뷰 페이지 이동 (example.com)") {
-                if let url = URL(string: "https://www.example.com") {
-                    let request = URLRequest(url: url)
-                    context.webView?.load(request)
+            FunctionItem(name: "웹뷰 페이지 이동 (example.com ↔ 원래)") {
+                let currentHost = context.webView?.url?.host
+                let isExample = currentHost == "www.example.com" || currentHost == "example.com"
+                
+                if isExample, let vc = context.viewController as? MainViewController {
+                    if let url = URL(string: vc.originalURL) {
+                        context.webView?.load(URLRequest(url: url))
+                    }
+                } else {
+                    if let url = URL(string: "https://www.example.com") {
+                        context.webView?.load(URLRequest(url: url))
+                    }
                 }
             },
             FunctionItem(name: "웹뷰에 네이티브 토큰 저장") {

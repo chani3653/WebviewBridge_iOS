@@ -20,6 +20,7 @@ class MainViewController: UIViewController {
     var router: BridgeRouter!
     var logItems: [LogItem] = []
     var storageItems: [(key: String, value: String)] = []
+    let originalURL = "http://192.168.0.10:5173"
     
     private var panGesture: UIPanGestureRecognizer!
     private var initialBottomConstraint: CGFloat = 0
@@ -125,6 +126,7 @@ class MainViewController: UIViewController {
             webView.isInspectable = true
         }
         
+        webView.uiDelegate = self
         webView.translatesAutoresizingMaskIntoConstraints = false
         webContainerView.addSubview(webView)
         NSLayoutConstraint.activate([
@@ -143,6 +145,7 @@ class MainViewController: UIViewController {
         router.register(NativeHapticComboHandler())
         router.register(NativePushHandler())
         router.register(NativeTokenHandler())
+        router.register(NativeOpenExternalHandler())
         
         self.router = router
         
