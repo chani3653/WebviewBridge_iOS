@@ -1,188 +1,245 @@
-# WebViewBridge iOS
+# 📱 iOS Bridge Web Module
 
-iOS 네이티브와 WebView 간 양방향 브릿지 통신을 구현한 프로젝트입니다.
-
-웹에서 `postMessage`로 네이티브 기능을 호출하고, 네이티브에서 `sendResponse`/`sendCommand`로 웹에 응답하는 구조입니다.
-
----
-
-## 프로젝트 구조
-
-```
-WebViewBridge/
-├── Bridge/                           # 브릿지 통신 인프라
-│   ├── Context.swift                 # 메시지 송수신 컨텍스트
-│   ├── Models.swift                  # BridgeMessage 데이터 모델
-│   ├── Router.swift                  # 액션 기반 핸들러 라우팅
-│   ├── Toast.swift                   # Toast UI 확장
-│   └── Handler/                      # 네이티브 기능 핸들러
-│       ├── NativeTokenHandler.swift  # 토큰 생성/반환
-│       ├── UIToast.swift             # 토스트 메시지 표시
-│       ├── Push.swift                # 푸시 알림 권한 요청 및 로컬 알림
-│       └── Vibrate.swift             # CoreHaptics 진동 피드백
-│
-├── MainViewController/               # 메인 화면
-│   ├── MainViewController.swift      # WebView + 디버깅 UI
-│   ├── Extension/
-│   │   ├── WebViewExtension.swift    # WKScriptMessageHandler 구현
-│   │   └── TableViewExtension.swift  # TableView DataSource/Delegate
-│   ├── Model/
-│   │   ├── FunctionItem.swift        # 테스트 기능 모델
-│   │   └── LogItem.swift             # 통신 로그 모델
-│   └── View/
-│       ├── FunctionTableViewCell     # 기능 목록 셀
-│       ├── LogTableViewCell          # 통신 로그 셀
-│       └── DataTableViewCell         # UserDefaults 데이터 셀
-```
+iOS `WKWebView` 환경에서 동작하는 **Web ↔ Native 브릿지 테스트용 React/Vite 모듈**이다.  
+이 모듈은 Native 기능 호출, 응답 수신, 로그 확인, 로컬 데이터 확인을 한 화면 안에서 검증할 수 있도록 설계되었다.
 
 ---
 
-## 통신 프로토콜
+## Overview
 
-### 메시지 형식
+이 프로젝트는 iOS 네이티브 앱에 탑재되는 WebView 화면을 기준으로 작성되었으며,  
+웹 단에서 다음 기능을 테스트하기 위한 목적을 가진다.
 
-모든 통신은 JSON 기반으로 이루어집니다.
+- Web → Native 요청 전송
+- Native → Web 응답 수신
+- 브릿지 통신 로그 시각화
+- 웹 저장소(LocalStorage) 확인
 
-**Request (웹 → 네이티브)**
-```json
-{
-  "id": "req-12345",
-  "kind": "request",
-  "action": "native.token.get",
-  "payload": {}
-}
-```
-
-**Response (네이티브 → 웹)**
-```json
-{
-  "kind": "response",
-  "id": "req-12345",
-  "ok": true,
-  "result": "ios-uuid-string"
-}
-```
-
-**Command (네이티브 → 웹, 응답 없음)**
-```json
-{
-  "kind": "command",
-  "action": "push.permission",
-  "payload": { "granted": true }
-}
-```
-
-### 통신 흐름
-
-```
-웹 (JavaScript)                              네이티브 (Swift)
-      │                                            │
-      │  postMessage({ action, payload })          │
-      ├───────────────────────────────────────────→│
-      │                                            ├─ Router.route()
-      │                                            ├─ Handler.handle()
-      │                                            │
-      │  window.onNativeMessage({ ok, result })    │
-      │←───────────────────────────────────────────┤
-      │                                            │
-```
+압축 파일 기준으로 확인된 구조는 **React 19 + Vite 7** 기반이며,  
+핵심 브릿지 로직은 `src/Bridge/BridgeAction.js`에서 처리된다.
 
 ---
 
-## 등록된 핸들러
+## Tech Stack
 
-| 액션 | 핸들러 | 기능 | Payload |
-|------|--------|------|---------|
-| `native.token.get` | NativeTokenHandler | UUID 토큰 생성 및 반환 | - |
-| `native.ui.toast` | NativeUIToastHandler | 토스트 메시지 표시 | `{ message: string }` |
-| `native.push.requestPermission` | NativePushHandler | 푸시 권한 요청 + 로컬 알림 | `{ title, body, delay }` |
-| `native.haptic.vibrate` | NativeHapticComboHandler | 진동 피드백 | `{ duration, peak }` |
-
----
-
-## 핸들러 추가 방법
-
-`BridgeHandler` 프로토콜을 구현하고 Router에 등록하면 됩니다.
-
-```swift
-final class MyHandler: BridgeHandler {
-    static let action = "native.my.action"
-
-    func handle(_ message: BridgeMessage, context: BridgeContext) {
-        guard let id = message.id else { return }
-
-        // 네이티브 기능 수행
-        let result = "처리 완료"
-
-        // 웹으로 응답
-        context.sendResponse(id: id, ok: true, result: result)
-    }
-}
-```
-
-```swift
-// MainViewController.setWebView()에서 등록
-router.register(MyHandler())
-```
+| Item | Value |
+|------|-------|
+| Framework | React 19 |
+| Bundler | Vite 7 |
+| Language | JavaScript (ES Modules) |
+| UI Style | Custom CSS |
+| Target Runtime | iOS WKWebView |
+| Bridge Entry | `window.webkit.messageHandlers.bridge.postMessage(...)` |
 
 ---
 
-## 디버깅 UI
+## Project Structure
 
-화면 하단의 탭으로 전환할 수 있는 3개의 패널이 있습니다.
-
-| 탭 | 기능 |
-|----|------|
-| **기능** | 테스트 함수 목록 (얼럿, 토큰 조회, 페이지 이동, 토큰 저장) |
-| **콘솔** | 브릿지 통신 로그 (방향, 상태, 메시지 내용 실시간 표시) |
-| **데이터** | UserDefaults 저장소의 키-값 조회 |
-
-### 콘솔 로그 색상
-
-**상태별:**
-- 대기 — 회색
-- 성공 — 연두색
-- 실패 — 주황색
-
-**방향별:**
-- Web → Native — 하늘색
-- Native → Web — 연보라색
-
----
-
-## 웹 측 연동
-
-웹에서 브릿지를 사용하려면 아래 두 가지가 필요합니다.
-
-### 1. 네이티브 호출
-
-```javascript
-window.webkit.messageHandlers.bridge.postMessage({
-  id: "unique-id",
-  kind: "request",
-  action: "native.ui.toast",
-  payload: { message: "안녕하세요!" }
-});
-```
-
-### 2. 응답 수신
-
-```javascript
-window.onNativeMessage = (msg) => {
-  const { id, kind, ok, result, error } = msg;
-  if (kind === "response") {
-    // id로 매칭하여 처리
-  }
-};
-```
+~~~text
+project-root
+├── index.html
+├── package.json
+├── vite.config.js
+├── src
+│   ├── App.jsx
+│   ├── main.jsx
+│   ├── index.css
+│   ├── Bridge
+│   │   ├── BridgeAction.js
+│   │   └── ConsoleAction.js
+│   ├── Components
+│   │   └── Tabs.jsx
+│   ├── Pages
+│   │   ├── Functions.jsx
+│   │   ├── Console.jsx
+│   │   └── Storage.jsx
+│   └── Storage
+│       └── StorageAction.js
+└── public
+    └── vite.svg
+~~~
 
 ---
 
-## 기술 스택
+## Screen Composition
 
-- **UI:** UIKit (Storyboard + XIB)
-- **WebView:** WKWebView
-- **통신:** WKScriptMessageHandler
-- **알림:** UserNotifications
-- **진동:** CoreHaptics
-- **저장소:** UserDefaults
+이 모듈은 상단 탭 구조를 기반으로 3개의 주요 화면을 제공한다.
+
+| Tab | Description |
+|-----|-------------|
+| 기능 | Native 기능 호출 테스트 |
+| 콘솔 | Web ↔ Native 로그 확인 |
+| 데이터 | LocalStorage 데이터 확인 |
+
+---
+
+## Core Features
+
+### 1. Native Function Test
+
+`Functions.jsx`에서는 버튼 기반으로 여러 Native 액션을 호출할 수 있다.
+
+현재 확인된 호출 항목:
+
+| Action | Description |
+|--------|-------------|
+| `native.haptic.vibrate` | 진동 호출 |
+| `native.push.requestPermission` | 푸시 권한 요청 |
+| `native.token.get` | 토큰 조회 |
+| `native.ui.toast` | 토스트 메시지 표시 |
+| `native.app.openExternal` | 외부 URL 열기 |
+
+---
+
+### 2. Promise-Based Bridge Request
+
+`requestNative()`는 고유 ID를 생성하고,  
+`pending Map`에 요청 상태를 저장한 뒤 Promise 형태로 Native 응답을 기다린다.
+
+주요 특징:
+
+- request id 자동 생성
+- timeout 기본 8000ms
+- response 수신 시 resolve / reject 처리
+- 브릿지 미연결 시 즉시 실패 처리
+
+---
+
+### 3. Native Response Receiver
+
+웹에서는 전역 함수 `window.onNativeMessage`를 통해  
+네이티브가 전달하는 response/event 메시지를 수신한다.
+
+이 구조를 통해 다음이 가능하다.
+
+- request-response 매칭
+- 성공 / 실패 판별
+- 로그 기록 동기화
+
+---
+
+### 4. Log Viewer
+
+`ConsoleAction.js`는 인메모리 로그 저장소 역할을 하며,  
+요청과 응답을 각각 기록하고 콘솔 화면에 표시한다.
+
+로그 특징:
+
+- 최신순 정렬
+- 최대 200개 유지
+- elapsed time 계산
+- Success / Fail / Neutral 상태 구분
+
+---
+
+### 5. Storage Viewer
+
+`Storage.jsx`는 현재 웹의 `localStorage`를 읽어서  
+키-값 단위로 화면에 출력한다.
+
+특징:
+
+- 키 기준 정렬
+- JSON 문자열이면 pretty print 처리
+- 문자열이면 그대로 표시
+
+---
+
+## Bridge Flow
+
+~~~text
+[Web Button Click]
+        ↓
+create request message
+        ↓
+window.webkit.messageHandlers.bridge.postMessage(...)
+        ↓
+[iOS Native]
+        ↓
+Native handles action
+        ↓
+window.onNativeMessage(response)
+        ↓
+pending request resolve / reject
+        ↓
+Console log update
+~~~
+
+---
+
+## Key Files
+
+| File | Role |
+|------|------|
+| `src/App.jsx` | 전체 탭/레이아웃 구성 |
+| `src/Bridge/BridgeAction.js` | 브릿지 송수신 핵심 로직 |
+| `src/Bridge/ConsoleAction.js` | 로그 저장 및 상태 관리 |
+| `src/Pages/Functions.jsx` | Native 액션 테스트 UI |
+| `src/Pages/Console.jsx` | 로그 출력 UI |
+| `src/Pages/Storage.jsx` | LocalStorage 확인 UI |
+| `src/Components/Tabs.jsx` | 상단 탭 UI |
+
+---
+
+## Development Environment
+
+로컬 개발 서버는 Vite 설정 기준 아래와 같이 구성되어 있다.
+
+| Item | Value |
+|------|-------|
+| Host | `0.0.0.0` |
+| Port | `5173` |
+| Strict Port | `true` |
+
+즉, iOS 시뮬레이터나 실기기에서 같은 네트워크를 통해  
+개발 서버 접속 테스트를 고려한 설정으로 볼 수 있다.
+
+---
+
+## Observations from Analysis
+
+압축 파일 분석 기준으로 확인된 특징은 다음과 같다.
+
+- `node_modules`가 포함되어 있어 저장소 업로드 시 불필요하게 무거워질 수 있음
+- `__MACOSX`, `.DS_Store`, `src/Console /ConsoleAction.js` 같은 정리 대상이 존재함
+- `StorageAction.js`는 현재 비어 있음
+- 현재 문서는 “순수 iOS 네이티브 소스”보다 “iOS WebView 테스트 웹 모듈”에 더 가까움
+
+---
+
+## Cleanup Recommendations
+
+| Item | Recommendation |
+|------|----------------|
+| `node_modules` | 저장소 제외 권장 |
+| `__MACOSX` | 삭제 권장 |
+| `.DS_Store` | 삭제 권장 |
+| `src/Console /ConsoleAction.js` | 중복/오타성 폴더 확인 필요 |
+| `src/Storage/StorageAction.js` | 사용하지 않으면 제거 고려 |
+
+---
+
+## Recommended Wiki Reading Order
+
+1. [[Overview]]
+2. [[Architecture]]
+3. [[Bridge Design]]
+4. [[Communication Protocol]]
+5. [[iOS Implementation]]
+6. [[Web Implementation]]
+7. [[Troubleshooting]]
+
+---
+
+## Summary
+
+이 프로젝트는 iOS `WKWebView` 환경에서 동작하는  
+브릿지 테스트용 Web 모듈로서 다음 가치가 있다.
+
+- Native 기능 테스트 UI 제공
+- Promise 기반 브릿지 요청 구조 구현
+- 요청/응답 로그 가시화
+- Web ↔ Native 통신 검증 환경 제공
+
+즉, 단순한 웹 화면이 아니라  
+**iOS 브릿지 통합 테스트를 위한 실험/검증용 인터페이스**라는 점에 의미가 있다.
